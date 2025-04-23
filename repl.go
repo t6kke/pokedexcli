@@ -15,7 +15,7 @@ func startRepl() {
 		text := scanner.Text()
 		words_slice := cleanInput(text)
 
-		//fmt.Printf("Your command was: %s\n", words_slice[0]) //this was initial test
+		//fmt.Printf("Your command was: %s\n", words_slice[0]) //this was initial test in early lesson
 		command_options := getCommands()
 		val, ok := command_options[words_slice[0]]
 		if ok {
@@ -43,10 +43,16 @@ func cleanInput(text string) []string {
 }
 
 
+type Config struct {
+	next_url     string
+	previous_url string
+}
+
 type cliCommand struct {
 	name        string
 	description string
 	callback    func() error
+	config      *Config
 }
 
 func getCommands() map[string]cliCommand {
@@ -55,11 +61,25 @@ func getCommands() map[string]cliCommand {
 			name:        "help",
 			description: "Displays a help message",
 			callback:    commandHelp,
+			config:      nil,
 		},
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",
 			callback:    commandExit,
+			config:      nil,
+		},
+		"map": {
+			name:        "map",
+			description: "Displays first or next 20 location areas",
+			callback:    commandMap,
+			config:      &Config{next_url: "initial value", previous_url: "initial value",},
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Displays previous 20 location areas",
+			callback:    commandMapb,
+			config:      nil,
 		},
 	}
 }

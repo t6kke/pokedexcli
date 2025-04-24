@@ -10,32 +10,29 @@ import (
 type locationareas struct {
 	Count    int    `json:"count"`
 	Next     string `json:"next"`
-	Previous any    `json:"previous"`
+	Previous string `json:"previous"`
 	Results  []struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
 	} `json:"results"`
 }
 
-func Test(url string) (string, error) {
+func GetLocationAreas(url string) (locationareas, string, error) {
 	res, err := http.Get(url)
 	defer res.Body.Close()
 	if err != nil {
-		return "", err
+		return  locationareas{}, "", err
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if res.StatusCode > 299 {
-		return "", fmt.Errorf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, body)
+		return locationareas{}, "", fmt.Errorf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, body)
 	}
 	if err != nil {
-		return "", err
+		return locationareas{}, "", err
 	}
 
-	var data locationareas //TODO data should be renamed and returned
-	json.Unmarshal(body, &data)
-	fmt.Println(data.Count)
-
-	//fmt.Printf("%s\n", body)
-	return string(body), nil
+	var loc_areas locationareas
+	json.Unmarshal(body, &loc_areas)
+	return loc_areas, string(body), nil
 }

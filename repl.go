@@ -7,7 +7,10 @@ import (
 	"os"
 )
 
+var command_options map[string]*cliCommand //this is needed to for working with cliCommand as pointers
+
 func startRepl() {
+	command_options = getCommands() //this is needed to for working with cliCommand as pointers
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -55,8 +58,8 @@ type cliCommand struct {
 	config      *Config
 }
 
-func getCommands() map[string]cliCommand {
-	return map[string]cliCommand{
+func getCommands() map[string]*cliCommand {
+	return map[string]*cliCommand{
 		"help": {
 			name:        "help",
 			description: "Displays a help message",
@@ -73,13 +76,13 @@ func getCommands() map[string]cliCommand {
 			name:        "map",
 			description: "Displays first or next 20 location areas",
 			callback:    commandMap,
-			config:      &Config{next_url: "initial value", previous_url: "initial value",},
+			config:      &Config{next_url: "", previous_url: "",},
 		},
 		"mapb": {
 			name:        "mapb",
 			description: "Displays previous 20 location areas",
 			callback:    commandMapb,
-			config:      nil,
+			config:      &Config{next_url: "", previous_url: "",},
 		},
 	}
 }

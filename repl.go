@@ -18,6 +18,10 @@ func startRepl() {
 		text := scanner.Text()
 		words_slice := cleanInput(text)
 
+		if len(words_slice) == 1 && words_slice[0] == "" {
+			continue
+		}
+
 		//fmt.Printf("Your command was: %s\n", words_slice[0]) //this was initial test in early lesson
 		command_options := getCommands()
 		val, ok := command_options[words_slice[0]]

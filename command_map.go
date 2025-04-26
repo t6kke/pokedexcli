@@ -25,7 +25,7 @@ func commandMap() error {
 
 	//output information for end user
 	if previus_url == "" {
-		fmt.Println("You're on the first page\n")
+		fmt.Print("You're on the first page\n\n")
 	}
 	for _, location := range location_areas.Results {
 		fmt.Println(location.Name)
@@ -61,7 +61,7 @@ func commandMapb() error {
 
 	//output information for end user
 	if previus_url == "" {
-		fmt.Println("You're on the first page\n")
+		fmt.Print("You're on the first page\n\n")
 	}
 	for _, location := range location_areas.Results {
 		fmt.Println(location.Name)

@@ -1,7 +1,15 @@
 package pokecache
 
-import "testing"
+import (
+	"testing"
+	"time"
+	"fmt"
+)
 
+//TODO add my own tests
+
+
+//test function example from boot.dev
 func TestAddGet(t *testing.T) {
 	const interval = 5 * time.Second
 	cases := []struct {
@@ -35,6 +43,7 @@ func TestAddGet(t *testing.T) {
 	}
 }
 
+//test function example from boot.dev
 func TestReapLoop(t *testing.T) {
 	const baseTime = 5 * time.Millisecond
 	const waitTime = baseTime + 5*time.Millisecond

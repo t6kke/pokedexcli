@@ -20,7 +20,6 @@ func NewCache(interval time.Duration) Cache {
 	result_cache := Cache { data: make(map[string]cacheEntry),}
 	cache_reaploop := func(interval time.Duration) {
 		result_cache.reapLoop(interval)
-		time.Sleep(interval) //TODO instead of this I need to use time.Ticker with some channel to run the reaploop thing
 	}
 	go cache_reaploop(interval)
 	return result_cache
@@ -37,8 +36,8 @@ func (c *Cache) Add(key string, value []byte) {
 
 func (c *Cache) Get(key string) ([]byte, bool) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
 	cache_entry, ok := c.data[key]
+	c.mu.Unlock()
 	if !ok {
 		return nil, false
 	}
@@ -46,12 +45,21 @@ func (c *Cache) Get(key string) ([]byte, bool) {
 }
 
 func (c *Cache) reapLoop(interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+	for {
+		<- ticker.C
+		runCacheCleaner(c, interval)
+	}
+}
+
+func runCacheCleaner(c *Cache, interval time.Duration) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
-	past_time := time.Now().Add(-1 * interval)
 	for key, cache_entry := range c.data {
+		past_time := time.Now().Add(-1 * interval)
 		if cache_entry.createdAt.Before(past_time) {
 			delete(c.data, key)
 		}
 	}
+	c.mu.Unlock()
 }

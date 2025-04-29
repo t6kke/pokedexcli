@@ -3,7 +3,6 @@ package pokecache
 import (
 	"time"
 	"sync"
-	//"fmt"
 )
 
 type cacheEntry struct {
@@ -13,11 +12,11 @@ type cacheEntry struct {
 
 type Cache struct {
 	mu   sync.Mutex
-	data map[string]cacheEntry
+	Data map[string]cacheEntry
 }
 
 func NewCache(interval time.Duration) Cache {
-	result_cache := Cache { data: make(map[string]cacheEntry),}
+	result_cache := Cache { Data: make(map[string]cacheEntry),}
 	cache_reaploop := func(interval time.Duration) {
 		result_cache.reapLoop(interval)
 	}
@@ -28,7 +27,7 @@ func NewCache(interval time.Duration) Cache {
 func (c *Cache) Add(key string, value []byte) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	c.data[key] = cacheEntry{
+	c.Data[key] = cacheEntry{
 		createdAt: time.Now(),
 		val:       value,
 	}
@@ -36,7 +35,7 @@ func (c *Cache) Add(key string, value []byte) {
 
 func (c *Cache) Get(key string) ([]byte, bool) {
 	c.mu.Lock()
-	cache_entry, ok := c.data[key]
+	cache_entry, ok := c.Data[key]
 	c.mu.Unlock()
 	if !ok {
 		return nil, false
@@ -55,10 +54,10 @@ func (c *Cache) reapLoop(interval time.Duration) {
 
 func runCacheCleaner(c *Cache, interval time.Duration) {
 	c.mu.Lock()
-	for key, cache_entry := range c.data {
+	for key, cache_entry := range c.Data {
 		past_time := time.Now().Add(-1 * interval)
 		if cache_entry.createdAt.Before(past_time) {
-			delete(c.data, key)
+			delete(c.Data, key)
 		}
 	}
 	c.mu.Unlock()

@@ -15,7 +15,8 @@ func commandMap() error {
 		url = cli_command.config.next_url
 	}
 
-	location_areas, _, err := pokeapi.GetLocationAreas(url)
+	//location_areas, _, err := pokeapi.GetLocationAreas(url)
+	location_areas, _, err := pokeapi.GetLocationAreasWCache(url, &cli_command.config.api_cache)
 	if err != nil {
 		return err
 	}
@@ -51,7 +52,8 @@ func commandMapb() error {
 		url = cli_command.config.previous_url
 	}
 
-	location_areas, _, err := pokeapi.GetLocationAreas(url)
+	//location_areas, _, err := pokeapi.GetLocationAreas(url)
+	location_areas, _, err := pokeapi.GetLocationAreasWCache(url, &cli_command.config.api_cache)
 	if err != nil {
 		return err
 	}

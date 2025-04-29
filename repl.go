@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"bufio"
 	"os"
+	"time"
+	"github.com/t6kke/pokedexcli/internal/pokecache"
 )
 
 var command_options map[string]*cliCommand //this is needed to for working with cliCommand as pointers
@@ -53,6 +55,7 @@ func cleanInput(text string) []string {
 type Config struct {
 	next_url     string
 	previous_url string
+	api_cache    pokecache.Cache
 }
 
 type cliCommand struct {
@@ -63,6 +66,8 @@ type cliCommand struct {
 }
 
 func getCommands() map[string]*cliCommand {
+	const baseTime = 60 * time.Second
+	cache := pokecache.NewCache(baseTime)
 	return map[string]*cliCommand{
 		"help": {
 			name:        "help",
@@ -80,15 +85,13 @@ func getCommands() map[string]*cliCommand {
 			name:        "map",
 			description: "Displays first or next 20 location areas",
 			callback:    commandMap,
-			config:      &Config{next_url: "", previous_url: "",},
+			config:      &Config{next_url: "", previous_url: "", api_cache: cache,},
 		},
 		"mapb": {
 			name:        "mapb",
 			description: "Displays previous 20 location areas",
 			callback:    commandMapb,
-			config:      &Config{next_url: "", previous_url: "",},
+			config:      &Config{next_url: "", previous_url: "", api_cache: cache,},
 		},
 	}
 }
-
-

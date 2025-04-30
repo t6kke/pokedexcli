@@ -5,7 +5,7 @@ import (
 	"github.com/t6kke/pokedexcli/internal/pokeapi"
 )
 
-func commandMap() error {
+func commandMap(args []string) error {
 	var url string
 	cli_command := command_options["map"]
 	if cli_command.config.next_url == "" && cli_command.config.previous_url == "" {
@@ -41,10 +41,9 @@ func commandMap() error {
 	return nil
 }
 
-func commandMapb() error {
+func commandMapb(args []string) error {
 	var url string
 	cli_command := command_options["map"]
-
 	if cli_command.config.previous_url == "" {
 		fmt.Println("you're on the first page, use 'map' command to list first location areas")
 		return nil

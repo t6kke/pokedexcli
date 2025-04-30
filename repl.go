@@ -28,7 +28,7 @@ func startRepl() {
 		command_options := getCommands()
 		val, ok := command_options[words_slice[0]]
 		if ok {
-			val.callback()
+			val.callback(words_slice[1:])
 		} else {
 			fmt.Println("unknown command")
 		}
@@ -61,7 +61,7 @@ type Config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func([]string) error
 	config      *Config
 }
 
@@ -91,6 +91,12 @@ func getCommands() map[string]*cliCommand {
 			name:        "mapb",
 			description: "Displays previous 20 location areas",
 			callback:    commandMapb,
+			config:      &Config{next_url: "", previous_url: "", api_cache: cache,},
+		},
+		"explore": {
+			name:        "explore",
+			description: "Displays list of pokemon in selected location area\n         Use -   explore <location area>",
+			callback:    commandExplore,
 			config:      &Config{next_url: "", previous_url: "", api_cache: cache,},
 		},
 	}

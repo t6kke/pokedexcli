@@ -99,5 +99,11 @@ func getCommands() map[string]*cliCommand {
 			callback:    commandExplore,
 			config:      &Config{next_url: "", previous_url: "", api_cache: cache,},
 		},
+		"catch": {
+			name:        "catch",
+			description: "Attempts to catch the pokemon\n       Use -   catch <pokemon name>",
+			callback:    commandCatch,
+			config:      &Config{next_url: "", previous_url: "", api_cache: cache,},
+		},
 	}
 }

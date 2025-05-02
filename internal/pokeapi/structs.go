@@ -63,7 +63,7 @@ type locationareadata struct {
 	} `json:"pokemon_encounters"`
 }
 
-type pokemondata struct {
+type Pokemondata struct {
 	ID             int    `json:"id"`
 	Name           string `json:"name"`
 	BaseExperience int `json:"base_experience"`

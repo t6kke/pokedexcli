@@ -72,8 +72,8 @@ func GetLocationAreaDataWCache(url string, cache *pokecache.Cache) (locationarea
 	return loc_area_data, string(body), nil
 }
 
-func GetPokemonDataWCache(url string, cache *pokecache.Cache) (pokemondata, string, error) {
-	var pokemon_data pokemondata
+func GetPokemonDataWCache(url string, cache *pokecache.Cache) (Pokemondata, string, error) {
+	var pokemon_data Pokemondata
 	if len(cache.Data) != 0 {
 		cache_data, ok := cache.Get(url)
 		if ok {
@@ -87,15 +87,15 @@ func GetPokemonDataWCache(url string, cache *pokecache.Cache) (pokemondata, stri
 	res, err := http.Get(url)
 	defer res.Body.Close()
 	if err != nil {
-		return  pokemondata{}, "", err
+		return  Pokemondata{}, "", err
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if res.StatusCode > 299 {
-		return pokemondata{}, "", fmt.Errorf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, body)
+		return Pokemondata{}, "", fmt.Errorf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, body)
 	}
 	if err != nil {
-		return pokemondata{}, "", err
+		return Pokemondata{}, "", err
 	}
 
 	cache.Add(url, body)

@@ -38,6 +38,7 @@ func commandCatch(args []string) error {
 		return nil
 	}
 	fmt.Printf("%s was caught!\n", pokemon)
+	fmt.Printf("You may now inspect it with the inspect command.\n")
 	cli_command.config.pokemons[pokemon] = pokemon_data
 
 	return nil

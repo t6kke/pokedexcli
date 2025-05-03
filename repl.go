@@ -41,7 +41,7 @@ func cleanInput(text string) []string {
 
 	if text == "" {
 		result_slice = append(result_slice, "")
-		return result_slice //TODO this probably needs to be handled with error but not currently part of the lesson, function definition needs to be modified to include erros and also
+		return result_slice //TODO this probably needs to be handled with error but not currently part of the lesson, function definition needs to be modified to include erros
 	}
 
 	temp_slice := strings.Fields(text)
@@ -106,6 +106,18 @@ func getCommands() map[string]*cliCommand {
 			name:        "catch",
 			description: "Attempts to catch the pokemon\n       Use -   catch <pokemon name>",
 			callback:    commandCatch,
+			config:      &Config{next_url: "", previous_url: "", api_cache: cache, pokemons: caught_pokemon},
+		},
+		"inspect": {
+			name:        "inspect",
+			description: "Inspects the pokemon in your pokedex\n         Use -   inspect <pokemon name>",
+			callback:    commandInspect,
+			config:      &Config{next_url: "", previous_url: "", api_cache: cache, pokemons: caught_pokemon},
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "Lists all pokemon in your inventory",
+			callback:    commandPokedex,
 			config:      &Config{next_url: "", previous_url: "", api_cache: cache, pokemons: caught_pokemon},
 		},
 	}

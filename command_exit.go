@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-func commandExit() error {
+func commandExit(args []string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
-	return nil //TODO why? as the AI...
+	return nil
 }
